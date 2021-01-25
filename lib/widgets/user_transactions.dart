@@ -17,10 +17,11 @@ class _UserTransactionsState extends State<UserTransactions> {
       date: DateTime.now(),
     ),
     Transaction(
-        id: 't2',
-        title: 'Какие-то плюхи',
-        mount: 1220.13,
-        date: DateTime.now()),
+      id: 't2',
+      title: 'Какие-то плюхи',
+      mount: 1220.13,
+      date: DateTime.now(),
+    ),
   ];
 
   void _addNewTransaction(String title, double amount) {
@@ -29,7 +30,6 @@ class _UserTransactionsState extends State<UserTransactions> {
         title: title,
         mount: amount,
         date: new DateTime.now());
-
 
     setState(() {
       _userTransactions.add(newTransaction);

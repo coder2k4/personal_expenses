@@ -27,18 +27,20 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Расчет расходов'),
       ),
-      body: Column(
-        children: [
-          Card(
-            child: Container(
-              child: Text('Это карточка'),
-              width: double.infinity,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Card(
+              child: Container(
+                child: Text('Это карточка'),
+                width: double.infinity,
+              ),
+              color: Colors.lightBlueAccent,
             ),
-            color: Colors.lightBlueAccent,
-          ),
 
-          UserTransactions(),
-        ],
+            UserTransactions(),
+          ],
+        ),
       ),
     );
   }

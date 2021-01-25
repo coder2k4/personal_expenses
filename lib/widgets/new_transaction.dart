@@ -11,6 +11,7 @@ class NewTransaction extends StatelessWidget {
 
   NewTransaction(this.addTransaction);
 
+  //todo вынести в отдельную функцию submit, добавить проверку (валидацию), добавить обработчики на каждый инпут
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class NewTransaction extends StatelessWidget {
             TextField(
               decoration: InputDecoration(labelText: 'Цена'),
               controller: amountController,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
             ),
             FlatButton(
               onPressed: () {
