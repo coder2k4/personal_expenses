@@ -11,7 +11,6 @@ class NewTransaction extends StatefulWidget {
 
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
-
   final amountController = TextEditingController();
 
   /// Обрабатываем наши инпуты при сумбите каждого из них
@@ -39,14 +38,14 @@ class _NewTransactionState extends State<NewTransaction> {
               decoration: InputDecoration(labelText: 'Заголовок'),
               controller: titleController,
               onSubmitted: (_) =>
-                  submitHandler, // не используем передаваемый параметр
+                  submitHandler(), // не используем передаваемый параметр
             ),
             TextField(
               decoration: InputDecoration(labelText: 'Цена'),
               controller: amountController,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               onSubmitted: (_) =>
-                  submitHandler, // не используем передаваемый параметр
+                  submitHandler(), // не используем передаваемый параметр
             ),
             FlatButton(
               onPressed: submitHandler,

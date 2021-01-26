@@ -10,7 +10,7 @@ class ListTransaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 380,
+      height: transactions.isEmpty ? 600 : 380,
       child: transactions.isEmpty
           ? Column(
               children: <Widget>[
@@ -19,7 +19,7 @@ class ListTransaction extends StatelessWidget {
                   style: Theme.of(context).textTheme.title,
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
                 Container(
                     height: 200,

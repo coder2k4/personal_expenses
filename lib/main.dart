@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:personal_expenses/widgets/new_transaction.dart';
 
 import 'models/transaction.dart';
+import 'widgets/chart.dart';
 import 'widgets/list_transaction.dart';
 
 void main() {
@@ -14,26 +15,22 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Расчет расходов',
       theme: ThemeData(
-        primarySwatch: Colors.green,
-        accentColor: Colors.orange,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: 'Quicksand',
-        textTheme: ThemeData.light().textTheme.copyWith(
-              headline6: TextStyle(
-              fontFamily: 'OpenSans',
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            )),
-        appBarTheme: AppBarTheme(
+          primarySwatch: Colors.green,
+          accentColor: Colors.orange,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
-            headline6: TextStyle(
-              fontFamily: 'OpenSans',
-              fontSize: 20,
-              fontWeight: FontWeight.bold
-            )
-          )
-        )
-      ),
+                  headline6: TextStyle(
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              )),
+          appBarTheme: AppBarTheme(
+              textTheme: ThemeData.light().textTheme.copyWith(
+                  headline6: TextStyle(
+                      fontFamily: 'OpenSans',
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold)))),
       home: MyHomePage(),
     );
   }
@@ -59,6 +56,16 @@ class _MyHomePageState extends State<MyHomePage> {
     //   date: DateTime.now(),
     // ),
   ];
+
+  List<Transaction> get _weekTransactions {
+    return _userTransactions.where((tx) {
+      return tx.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
 
   void _addNewTransaction(String title, double amount) {
     final newTransaction = Transaction(
@@ -101,14 +108,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Card(
-              child: Container(
-                child: Text('Это карточка'),
-                width: double.infinity,
-              ),
-              color: Colors.lightBlueAccent,
-            ),
+            Chart(_weekTransactions),
             ListTransaction(_userTransactions),
           ],
         ),
