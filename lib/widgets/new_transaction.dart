@@ -1,17 +1,30 @@
-
-
 import 'package:flutter/material.dart';
 
-class NewTransaction extends StatelessWidget {
-
+class NewTransaction extends StatefulWidget {
   final Function addTransaction;
-
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
 
   NewTransaction(this.addTransaction);
 
-  //todo вынести в отдельную функцию submit, добавить проверку (валидацию), добавить обработчики на каждый инпут
+  @override
+  _NewTransactionState createState() => _NewTransactionState();
+}
+
+class _NewTransactionState extends State<NewTransaction> {
+  final titleController = TextEditingController();
+
+  final amountController = TextEditingController();
+
+  /// Обрабатываем наши инпуты при сумбите каждого из них
+  void submitHandler() {
+    final enteredTitle = titleController.text;
+    final enteredAmount = double.parse(amountController.text);
+
+    if (enteredTitle.isEmpty || enteredAmount <= 0) return;
+
+    widget.addTransaction(enteredTitle, enteredAmount);
+
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +38,18 @@ class NewTransaction extends StatelessWidget {
             TextField(
               decoration: InputDecoration(labelText: 'Заголовок'),
               controller: titleController,
+              onSubmitted: (_) =>
+                  submitHandler, // не используем передаваемый параметр
             ),
             TextField(
               decoration: InputDecoration(labelText: 'Цена'),
               controller: amountController,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
+              onSubmitted: (_) =>
+                  submitHandler, // не используем передаваемый параметр
             ),
             FlatButton(
-              onPressed: () {
-                addTransaction(titleController.text, double.parse(amountController.text));
-                print(amountController);
-              },
+              onPressed: submitHandler,
               child: Text('Добавить'),
               textColor: Colors.lightBlueAccent,
             )
