@@ -15,22 +15,30 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Расчет расходов',
       theme: ThemeData(
-          primarySwatch: Colors.green,
-          accentColor: Colors.orange,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          fontFamily: 'Quicksand',
-          textTheme: ThemeData.light().textTheme.copyWith(
-                  headline6: TextStyle(
+        primarySwatch: Colors.green,
+        accentColor: Colors.lightGreen,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              headline6: TextStyle(
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
-              )),
-          appBarTheme: AppBarTheme(
-              textTheme: ThemeData.light().textTheme.copyWith(
-                  headline6: TextStyle(
-                      fontFamily: 'OpenSans',
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold)))),
+              ),
+              button: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+        errorColor: Colors.red,
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+                headline6: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+        ),
+      ),
       home: MyHomePage(),
     );
   }
@@ -67,16 +75,24 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime date) {
     final newTransaction = Transaction(
         id: UniqueKey().toString(),
         title: title,
-        mount: amount,
-        date: new DateTime.now());
+        amount: amount,
+        date: date);
 
     setState(() {
       _userTransactions.add(newTransaction);
     });
+  }
+
+  void _deleteTransaction(String id) {
+
+    setState(() {
+      _userTransactions.removeWhere((element) => element.id == id);
+    });
+
   }
 
   void _startNewAddTransactions(BuildContext context) {
@@ -111,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Chart(_weekTransactions),
-            ListTransaction(_userTransactions),
+            ListTransaction(_userTransactions, _deleteTransaction),
           ],
         ),
       ),
