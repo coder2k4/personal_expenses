@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:personal_expenses/widgets/new_transaction.dart';
 
 import 'models/transaction.dart';
@@ -6,6 +7,13 @@ import 'widgets/chart.dart';
 import 'widgets/list_transaction.dart';
 
 void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  //   DeviceOrientation.portraitDown,
+  // ]);
+
   runApp(MyApp());
 }
 
@@ -77,10 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _addNewTransaction(String title, double amount, DateTime date) {
     final newTransaction = Transaction(
-        id: UniqueKey().toString(),
-        title: title,
-        amount: amount,
-        date: date);
+        id: UniqueKey().toString(), title: title, amount: amount, date: date);
 
     setState(() {
       _userTransactions.add(newTransaction);
@@ -88,11 +93,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _deleteTransaction(String id) {
-
     setState(() {
       _userTransactions.removeWhere((element) => element.id == id);
     });
-
   }
 
   void _startNewAddTransactions(BuildContext context) {
@@ -109,25 +112,38 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text('Расчет расходов'),
+      actions: [
+        IconButton(
+          icon: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+          onPressed: () => _startNewAddTransactions(context),
+        )
+      ],
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Расчет расходов'),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            onPressed: () => _startNewAddTransactions(context),
-          )
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(_weekTransactions),
-            ListTransaction(_userTransactions, _deleteTransaction),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.25,
+              child: Chart(_weekTransactions),
+            ),
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.75,
+                child: ListTransaction(_userTransactions, _deleteTransaction)),
           ],
         ),
       ),
